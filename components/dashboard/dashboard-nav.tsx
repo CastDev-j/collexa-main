@@ -88,7 +88,7 @@ export function DashboardNav({ user }: { user: any }) {
         </div>
       </div>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
         <div className="max-w-6xl mx-auto">
           <ul className="grid grid-cols-5">
             {navItems.map((item) => {
