@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Updated radius to 0.25rem (rounded-sm) */
+  --radius: 0.25rem;
+  
+  /* Using specified light theme color palette only */
+  /* Background & Foreground */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.141 0.005 285.823);
+  
+  /* Card */
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.141 0.005 285.823);
+  
+  /* Popover */
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.141 0.005 285.823);
+  
+  /* Primary - Orange/Red tone */
+  --color-primary: oklch(0.577 0.245 27.325);
+  --color-primary-foreground: oklch(0.971 0.013 17.38);
+  
+  /* Secondary */
+  --color-secondary: oklch(0.967 0.001 286.375);
+  --color-secondary-foreground: oklch(0.21 0.006 285.885);
+  
+  /* Muted */
+  --color-muted: oklch(0.967 0.001 286.375);
+  --color-muted-foreground: oklch(0.552 0.016 285.938);
+  
+  /* Accent */
+  --color-accent: oklch(0.967 0.001 286.375);
+  --color-accent-foreground: oklch(0.21 0.006 285.885);
+  
+  /* Destructive */
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-destructive-foreground: oklch(0.971 0.013 17.38);
+  
+  /* Border & Input */
+  --color-border: oklch(0.92 0.004 286.32);
+  --color-input: oklch(0.92 0.004 286.32);
+  
+  /* Ring */
+  --color-ring: oklch(0.704 0.191 22.216);
+  
+  /* Charts */
+  --color-chart-1: oklch(0.808 0.114 19.571);
+  --color-chart-2: oklch(0.637 0.237 25.331);
+  --color-chart-3: oklch(0.577 0.245 27.325);
+  --color-chart-4: oklch(0.505 0.213 27.518);
+  --color-chart-5: oklch(0.444 0.177 26.899);
+}
+
+/* Removed dark mode media query - light theme only */
