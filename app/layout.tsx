@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   title: "Collexa - Gestión de Colecciones",
   description:
     "Gestiona tu colección de libros, videojuegos, películas y más con Collexa",
-  generator: "v0.app",
 };
 
 export default function RootLayout({
