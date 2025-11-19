@@ -1,14 +1,13 @@
-import { Card } from '@/components/ui/card'
+import { Card } from "@/components/ui/card";
 
 interface PageLoaderProps {
-  title?: string
-  subtitle?: string
+  title?: string;
+  subtitle?: string;
 }
- 
-export function PageLoader({ title = 'Cargando', subtitle }: PageLoaderProps) {
+
+export function PageLoader({ title = "Cargando", subtitle }: PageLoaderProps) {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Header Loading */}
       <div className="space-y-3">
         <div className="h-10 w-64 bg-slate-200 rounded-sm animate-pulse" />
         {subtitle !== false && (
@@ -16,9 +15,7 @@ export function PageLoader({ title = 'Cargando', subtitle }: PageLoaderProps) {
         )}
       </div>
 
-      {/* Content Area */}
       <div className="space-y-6">
-        {/* Main Content Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <Card key={i} className="p-6 space-y-4">
@@ -38,7 +35,6 @@ export function PageLoader({ title = 'Cargando', subtitle }: PageLoaderProps) {
         </div>
       </div>
 
-      {/* Loading Indicator */}
       <div className="flex justify-center items-center py-8">
         <div className="flex items-center gap-3 text-slate-600">
           <div className="h-5 w-5 border-2 border-orange-600 border-t-transparent rounded-full animate-spin" />
@@ -46,10 +42,14 @@ export function PageLoader({ title = 'Cargando', subtitle }: PageLoaderProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export function FormLoader({ title = 'Cargando formulario' }: { title?: string }) {
+export function FormLoader({
+  title = "Cargando formulario",
+}: {
+  title?: string;
+}) {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="space-y-3">
@@ -78,15 +78,22 @@ export function FormLoader({ title = 'Cargando formulario' }: { title?: string }
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export function GridLoader({ columns = 5, title = 'Cargando' }: { columns?: number; title?: string }) {
-  const gridCols = {
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
-    5: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
-  }[columns] || 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+export function GridLoader({
+  columns = 5,
+  title = "Cargando",
+}: {
+  columns?: number;
+  title?: string;
+}) {
+  const gridCols =
+    {
+      3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+      4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+      5: "grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
+    }[columns] || "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -102,7 +109,6 @@ export function GridLoader({ columns = 5, title = 'Cargando' }: { columns?: numb
         <div className="h-10 w-32 bg-orange-100 rounded-sm animate-pulse" />
       </div>
 
-      {/* Grid */}
       <div className={`grid ${gridCols} gap-4`}>
         {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className="space-y-3">
@@ -122,10 +128,10 @@ export function GridLoader({ columns = 5, title = 'Cargando' }: { columns?: numb
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export function TableLoader({ title = 'Cargando' }: { title?: string }) {
+export function TableLoader({ title = "Cargando" }: { title?: string }) {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="space-y-3">
@@ -140,18 +146,22 @@ export function TableLoader({ title = 'Cargando' }: { title?: string }) {
       </div>
 
       <Card className="p-6 space-y-4">
-        {/* Table Header */}
         <div className="grid grid-cols-5 gap-4 pb-4 border-b">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-4 bg-slate-200 rounded-sm animate-pulse" />
+            <div
+              key={i}
+              className="h-4 bg-slate-200 rounded-sm animate-pulse"
+            />
           ))}
         </div>
 
-        {/* Table Rows */}
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="grid grid-cols-5 gap-4 py-3">
             {Array.from({ length: 5 }).map((_, j) => (
-              <div key={j} className="h-4 bg-slate-100 rounded-sm animate-pulse" />
+              <div
+                key={j}
+                className="h-4 bg-slate-100 rounded-sm animate-pulse"
+              />
             ))}
           </div>
         ))}
@@ -164,5 +174,5 @@ export function TableLoader({ title = 'Cargando' }: { title?: string }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
