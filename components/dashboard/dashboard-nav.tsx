@@ -11,6 +11,7 @@ import {
   Users,
   Settings,
   LogOut,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/dashboard/items", label: "Catálogo", icon: Package },
   { href: "/dashboard/loans", label: "Préstamos", icon: Users },
   { href: "/dashboard/wishlist", label: "Lista de Deseos", icon: Heart },
+  { href: "/dashboard/insights", label: "Estadísticas", icon: TrendingUp },
   { href: "/dashboard/settings", label: "Configuración", icon: Settings },
 ];
 

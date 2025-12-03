@@ -28,7 +28,7 @@ export function ItemsGrid({ items }: { items: Item[] }) {
       {items.map((item) => (
         <Link key={item.id} href={`/dashboard/items/${item.id}`}>
           <Card className="overflow-hidden cursor-pointer p-0">
-            <div className="aspect-[3/4] bg-slate-200 relative">
+            <div className="aspect-3/4 bg-slate-200 relative">
               {item.cover_image_url ? (
                 <img
                   src={item.cover_image_url || "/placeholder.svg"}

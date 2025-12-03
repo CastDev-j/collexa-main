@@ -1,42 +1,27 @@
-import { createClient } from '@/lib/supabase/server'
-import { ItemsGrid } from '@/components/items/items-grid'
-import { ItemsFilters } from '@/components/items/items-filters'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import Link from 'next/link'
+import { createClient } from "@/lib/supabase/server";
+import { ItemsGrid } from "@/components/items/items-grid";
+import { ItemsFilters } from "@/components/items/items-filters";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { getItemsForCatalog } from "@/lib/items/queries";
 
 export default async function ItemsPage({
   searchParams,
 }: {
-  searchParams: { type?: string; search?: string }
+  searchParams: { type?: string; search?: string };
 }) {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
-  let query = supabase
-    .from('items')
-    .select(`
-      *,
-      item_types(name),
-      platforms(name),
-      conditions(name),
-      locations(name)
-    `)
-    .order('created_at', { ascending: false })
-
-  if (searchParams.type) {
-    query = query.eq('item_type_id', searchParams.type)
-  }
-
-  if (searchParams.search) {
-    query = query.ilike('title', `%${searchParams.search}%`)
-  }
-
-  const { data: items } = await query
+  const items = await getItemsForCatalog({
+    type: searchParams.type ?? null,
+    search: searchParams.search ?? null,
+  });
 
   const { data: itemTypes } = await supabase
-    .from('item_types')
-    .select('*')
-    .order('name')
+    .from("item_types")
+    .select("*")
+    .order("name");
 
   return (
     <div className="space-y-6">
@@ -57,7 +42,7 @@ export default async function ItemsPage({
 
       <ItemsFilters itemTypes={itemTypes || []} />
 
-      <ItemsGrid items={items || []} />
+      <ItemsGrid items={items} />
     </div>
-  )
+  );
 }
