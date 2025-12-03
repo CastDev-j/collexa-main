@@ -1,52 +1,52 @@
-'use client'
+"use client";
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Search, X } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+} from "@/components/ui/select";
+import { Search, X } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 interface ItemType {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export function ItemsFilters({ itemTypes }: { itemTypes: ItemType[] }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [search, setSearch] = useState(searchParams.get('search') || '')
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("search") || "");
 
   const handleSearch = () => {
-    const params = new URLSearchParams(searchParams)
+    const params = new URLSearchParams(searchParams);
     if (search) {
-      params.set('search', search)
+      params.set("search", search);
     } else {
-      params.delete('search')
+      params.delete("search");
     }
-    router.push(`/dashboard/items?${params.toString()}`)
-  }
+    router.replace(`/dashboard/items?${params.toString()}`, { scroll: false });
+  };
 
   const handleTypeChange = (value: string) => {
-    const params = new URLSearchParams(searchParams)
-    if (value !== 'all') {
-      params.set('type', value)
+    const params = new URLSearchParams(searchParams);
+    if (value !== "all") {
+      params.set("type", value);
     } else {
-      params.delete('type')
+      params.delete("type");
     }
-    router.push(`/dashboard/items?${params.toString()}`)
-  }
+    router.replace(`/dashboard/items?${params.toString()}`, { scroll: false });
+  };
 
   const clearFilters = () => {
-    setSearch('')
-    router.push('/dashboard/items')
-  }
+    setSearch("");
+    router.replace("/dashboard/items", { scroll: false });
+  };
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">
@@ -55,7 +55,7 @@ export function ItemsFilters({ itemTypes }: { itemTypes: ItemType[] }) {
           placeholder="Buscar por título..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         />
         <Button onClick={handleSearch} size="icon">
           <Search className="h-4 w-4" />
@@ -63,7 +63,7 @@ export function ItemsFilters({ itemTypes }: { itemTypes: ItemType[] }) {
       </div>
 
       <Select
-        value={searchParams.get('type') || 'all'}
+        value={searchParams.get("type") || "all"}
         onValueChange={handleTypeChange}
       >
         <SelectTrigger className="w-full sm:w-48">
@@ -79,12 +79,12 @@ export function ItemsFilters({ itemTypes }: { itemTypes: ItemType[] }) {
         </SelectContent>
       </Select>
 
-      {(searchParams.get('search') || searchParams.get('type')) && (
+      {(searchParams.get("search") || searchParams.get("type")) && (
         <Button variant="outline" onClick={clearFilters}>
           <X className="h-4 w-4 mr-2" />
           Limpiar
         </Button>
       )}
     </div>
-  )
+  );
 }

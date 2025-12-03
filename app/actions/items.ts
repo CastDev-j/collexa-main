@@ -225,6 +225,5 @@ export async function fetchItemsForCatalog(filters: {
     items = data || [];
   }
 
-  revalidatePath("/dashboard/items");
   return items;
 }

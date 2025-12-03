@@ -1,27 +1,28 @@
-import { createClient } from '@/lib/supabase/server'
-import { WishlistGrid } from '@/components/wishlist/wishlist-grid'
-import { WishlistFilters } from '@/components/wishlist/wishlist-filters'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import Link from 'next/link'
+import { createClient } from "@/lib/supabase/server";
+import { WishlistGrid } from "@/components/wishlist/wishlist-grid";
+import { WishlistFilters } from "@/components/wishlist/wishlist-filters";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default async function WishlistPage({
   searchParams,
 }: {
-  searchParams: { priority?: string }
+  searchParams: Promise<{ priority?: string }>;
 }) {
-  const supabase = await createClient()
+  const supabase = await createClient();
+  const params = await searchParams;
 
   let query = supabase
-    .from('wishlist')
-    .select('*, item_types(name), platforms(name)')
-    .order('created_at', { ascending: false })
+    .from("wishlist")
+    .select("*, item_types(name), platforms(name)")
+    .order("created_at", { ascending: false });
 
-  if (searchParams.priority) {
-    query = query.eq('priority', searchParams.priority)
+  if (params.priority) {
+    query = query.eq("priority", params.priority);
   }
 
-  const { data: wishlist } = await query
+  const { data: wishlist } = await query;
 
   return (
     <div className="space-y-6">
@@ -44,5 +45,5 @@ export default async function WishlistPage({
 
       <WishlistGrid items={wishlist || []} />
     </div>
-  )
+  );
 }

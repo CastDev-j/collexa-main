@@ -30,7 +30,9 @@ export function WishlistFilters() {
     } else {
       params.set("priority", priority);
     }
-    router.push(`/dashboard/wishlist?${params.toString()}`);
+    router.replace(`/dashboard/wishlist?${params.toString()}`, {
+      scroll: false,
+    });
   };
 
   return (

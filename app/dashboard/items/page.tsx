@@ -6,16 +6,21 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { getItemsForCatalog } from "@/lib/items/queries";
 
+// Optimizar el cache para búsquedas
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ItemsPage({
   searchParams,
 }: {
-  searchParams: { type?: string; search?: string };
+  searchParams: Promise<{ type?: string; search?: string }>;
 }) {
   const supabase = await createClient();
+  const params = await searchParams;
 
   const items = await getItemsForCatalog({
-    type: searchParams.type ?? null,
-    search: searchParams.search ?? null,
+    type: params.type ?? null,
+    search: params.search ?? null,
   });
 
   const { data: itemTypes } = await supabase
