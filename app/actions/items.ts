@@ -27,9 +27,26 @@ export async function createItem(formData: FormData) {
     cover_image_url: formData.get("cover_image_url") || null,
   };
 
-  const { error } = await supabase.from("items").insert(itemData);
+  const { data: newItem, error } = await supabase
+    .from("items")
+    .insert(itemData)
+    .select()
+    .single();
 
   if (error) throw error;
+
+  // Guardar las etiquetas seleccionadas
+  const tagsStr = formData.get("tags");
+  if (tagsStr && newItem) {
+    const tagIds = JSON.parse(tagsStr as string);
+    if (tagIds.length > 0) {
+      const itemTagsData = tagIds.map((tagId: number) => ({
+        item_id: newItem.id,
+        tag_id: tagId,
+      }));
+      await supabase.from("item_tags").insert(itemTagsData);
+    }
+  }
 
   revalidatePath("/dashboard/items");
   revalidatePath("/dashboard");
@@ -57,6 +74,24 @@ export async function updateItem(id: number, formData: FormData) {
   const { error } = await supabase.from("items").update(itemData).eq("id", id);
 
   if (error) throw error;
+
+  // Actualizar las etiquetas
+  const tagsStr = formData.get("tags");
+  if (tagsStr) {
+    const tagIds = JSON.parse(tagsStr as string);
+
+    // Eliminar las etiquetas actuales
+    await supabase.from("item_tags").delete().eq("item_id", id);
+
+    // Insertar las nuevas etiquetas
+    if (tagIds.length > 0) {
+      const itemTagsData = tagIds.map((tagId: number) => ({
+        item_id: id,
+        tag_id: tagId,
+      }));
+      await supabase.from("item_tags").insert(itemTagsData);
+    }
+  }
 
   revalidatePath("/dashboard/items");
   revalidatePath(`/dashboard/items/${id}`);

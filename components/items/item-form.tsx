@@ -1,32 +1,34 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Card } from '@/components/ui/card'
-import { createItem, updateItem } from '@/app/actions/items'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2 } from 'lucide-react'
+} from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import { createItem, updateItem } from "@/app/actions/items";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2 } from "lucide-react";
 
 interface ItemFormProps {
-  item?: any
-  itemTypes: any[]
-  platforms: any[]
-  conditions: any[]
-  locations: any[]
-  publishers: any[]
-  creators: any[]
-  genres: any[]
+  item?: any;
+  itemTypes: any[];
+  platforms: any[];
+  conditions: any[];
+  locations: any[];
+  publishers: any[];
+  creators: any[];
+  genres: any[];
+  tags: any[];
+  itemTags?: any[];
 }
 
 export function ItemForm({
@@ -36,32 +38,48 @@ export function ItemForm({
   conditions,
   locations,
   publishers,
+  tags,
+  itemTags = [],
 }: ItemFormProps) {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<number[]>(
+    itemTags.map((it: any) => it.tag_id)
+  );
+
+  const toggleTag = (tagId: number) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
+
+    // Agregar las etiquetas seleccionadas al FormData
+    formData.append("tags", JSON.stringify(selectedTags));
 
     try {
       if (item) {
-        await updateItem(item.id, formData)
+        await updateItem(item.id, formData);
       } else {
-        await createItem(formData)
+        await createItem(formData);
       }
-      router.push('/dashboard/items')
-      router.refresh()
+      router.push("/dashboard/items");
+      router.refresh();
     } catch (err: any) {
-      setError(err.message || 'Error al guardar el item')
+      setError(err.message || "Error al guardar el item");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -137,7 +155,10 @@ export function ItemForm({
               </SelectTrigger>
               <SelectContent>
                 {conditions.map((condition) => (
-                  <SelectItem key={condition.id} value={condition.id.toString()}>
+                  <SelectItem
+                    key={condition.id}
+                    value={condition.id.toString()}
+                  >
                     {condition.name}
                   </SelectItem>
                 ))}
@@ -177,7 +198,10 @@ export function ItemForm({
               </SelectTrigger>
               <SelectContent>
                 {publishers.map((publisher) => (
-                  <SelectItem key={publisher.id} value={publisher.id.toString()}>
+                  <SelectItem
+                    key={publisher.id}
+                    value={publisher.id.toString()}
+                  >
                     {publisher.name}
                   </SelectItem>
                 ))}
@@ -232,7 +256,7 @@ export function ItemForm({
               <SelectContent>
                 {[1, 2, 3, 4, 5].map((rating) => (
                   <SelectItem key={rating} value={rating.toString()}>
-                    {'★'.repeat(rating)}
+                    {"★".repeat(rating)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -262,10 +286,43 @@ export function ItemForm({
           />
         </div>
 
+        <div className="space-y-2">
+          <Label>Etiquetas</Label>
+          <div className="flex flex-wrap gap-2">
+            {tags.length === 0 ? (
+              <p className="text-sm text-slate-600">
+                No hay etiquetas creadas. Ve a Configuración para crear
+                etiquetas.
+              </p>
+            ) : (
+              tags.map((tag) => (
+                <button
+                  key={tag.id}
+                  type="button"
+                  onClick={() => toggleTag(tag.id)}
+                  disabled={loading}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                    selectedTags.includes(tag.id)
+                      ? "ring-2 ring-offset-2"
+                      : "opacity-60 hover:opacity-100"
+                  }`}
+                  style={{
+                    backgroundColor: tag.color_hex,
+                    color: "#fff",
+                    ringColor: tag.color_hex,
+                  }}
+                >
+                  {tag.name}
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
         <div className="flex gap-4">
           <Button type="submit" disabled={loading}>
             {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            {loading ? 'Guardando...' : item ? 'Actualizar' : 'Crear Item'}
+            {loading ? "Guardando..." : item ? "Actualizar" : "Crear Item"}
           </Button>
           <Button
             type="button"
@@ -278,5 +335,5 @@ export function ItemForm({
         </div>
       </Card>
     </form>
-  )
+  );
 }

@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Edit, Trash2, Package } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { deleteItem } from '@/app/actions/items'
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Edit, Trash2, Package } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { deleteItem } from "@/app/actions/items";
 
 export function ItemDetails({ item, creators, genres, tags }: any) {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleDelete = async () => {
-    if (confirm('¿Estás seguro de que deseas eliminar este item?')) {
-      await deleteItem(item.id)
-      router.push('/dashboard/items')
-      router.refresh()
+    if (confirm("¿Estás seguro de que deseas eliminar este item?")) {
+      await deleteItem(item.id);
+      router.push("/dashboard/items");
+      router.refresh();
     }
-  }
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -62,37 +62,37 @@ export function ItemDetails({ item, creators, genres, tags }: any) {
               <div>
                 <dt className="text-sm text-slate-600">Tipo</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.item_types?.name || 'N/A'}
+                  {item.item_types?.name || "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Plataforma</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.platforms?.name || 'N/A'}
+                  {item.platforms?.name || "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Condición</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.conditions?.name || 'N/A'}
+                  {item.conditions?.name || "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Ubicación</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.locations?.name || 'N/A'}
+                  {item.locations?.name || "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Editorial</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.publishers?.name || 'N/A'}
+                  {item.publishers?.name || "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Año</dt>
                 <dd className="font-medium text-slate-900">
-                  {item.release_year || 'N/A'}
+                  {item.release_year || "N/A"}
                 </dd>
               </div>
               <div>
@@ -100,16 +100,16 @@ export function ItemDetails({ item, creators, genres, tags }: any) {
                 <dd className="font-medium text-slate-900">
                   {item.purchase_price
                     ? `$${Number(item.purchase_price).toFixed(2)}`
-                    : 'N/A'}
+                    : "N/A"}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-slate-600">Calificación</dt>
                 <dd className="font-medium text-slate-900">
                   {item.personal_rating
-                    ? '★'.repeat(item.personal_rating) +
-                      '☆'.repeat(5 - item.personal_rating)
-                    : 'N/A'}
+                    ? "★".repeat(item.personal_rating) +
+                      "☆".repeat(5 - item.personal_rating)
+                    : "N/A"}
                 </dd>
               </div>
             </dl>
@@ -121,8 +121,25 @@ export function ItemDetails({ item, creators, genres, tags }: any) {
               <p className="text-slate-600">{item.description}</p>
             </div>
           )}
+
+          {tags && tags.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-slate-900 mb-2">Etiquetas</h3>
+              <div className="flex flex-wrap gap-2">
+                {tags.map((itemTag: any) => (
+                  <span
+                    key={itemTag.tag_id}
+                    className="px-3 py-1 rounded-full text-sm font-medium text-white"
+                    style={{ backgroundColor: itemTag.tags.color_hex }}
+                  >
+                    {itemTag.tags.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </Card>
       </div>
     </div>
-  )
+  );
 }
